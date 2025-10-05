@@ -367,7 +367,7 @@ provide a separate method to initialize it:
       glutInitContextVersion(3, 3);
       glutInitContextProfile(GLUT_CORE_PROFILE);
       glutInit(&argc, argv);
-      glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+      glutInitDisplayMode(GLUT_RGBA);
       glutInitWindowSize(kWidth, kHeight);
       glutCreateWindow("ModelTest");
       glutHideWindow();
@@ -412,7 +412,6 @@ provide a separate method to initialize it:
         combine_textures,
         true /* half_precision */));
     model_->Init();
-    glutSwapBuffers();
   }
 
 /*
@@ -573,6 +572,7 @@ with the GPU program, and then read back the framebuffer pixels.
     InitShader();
 
     glViewport(0, 0, kWidth, kHeight);
+    glClear(GL_COLOR_BUFFER_BIT);
     {
       GLuint full_screen_quad_vao;
       glGenVertexArrays(1, &full_screen_quad_vao);
@@ -598,7 +598,6 @@ with the GPU program, and then read back the framebuffer pixels.
       glBindVertexArray(0);
       glDeleteVertexArrays(1, &full_screen_quad_vao);
     }
-    glutSwapBuffers();
 
     std::unique_ptr<unsigned char[]> gl_pixels(
         new unsigned char[4 * kWidth * kHeight]);

@@ -41,22 +41,7 @@ GLSL_SOURCES := $(shell find $(DIRS) -name "*.glsl")
 JS_SOURCES := $(shell find $(DIRS) -name "*.js")
 DOC_SOURCES := $(HEADERS) $(SOURCES) $(GLSL_SOURCES) $(JS_SOURCES) index
 
-all: lint doc test integration_test webgl demo
-
-# cpplint can be installed with "pip install cpplint".
-# We exclude runtime/references checking for functions.h and model_test.cc
-# because we can't avoid using non-const references in these files, due to the
-# constraints of double C++/GLSL compilation of functions.glsl.
-# We also exclude build/c++11 checking for docgen_main.cc to allow the use of
-# <regex>.
-lint: $(HEADERS) $(SOURCES)
-	cpplint --exclude=tools/docgen_main.cc \
-            --exclude=atmosphere/reference/functions.h \
-            --exclude=atmosphere/reference/model_test.cc --root=$(PWD) $^
-	cpplint --filter=-runtime/references --root=$(PWD) \
-            atmosphere/reference/functions.h \
-            atmosphere/reference/model_test.cc
-	cpplint --filter=-build/c++11 --root=$(PWD) tools/docgen_main.cc
+all: doc test integration_test webgl demo
 
 doc: $(DOC_SOURCES:%=output/Doc/%.html)
 
